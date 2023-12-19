@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .todo-container {
+            width: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .todo-header {
+            background-color: #4caf50;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            font-size: 24px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .todo-body {
+            padding: 20px;
+        }
+
+        #taskInput {
+            width: calc(100% - 16px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #addTaskBtn {
+            width: calc(100% - 16px);
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #addTaskBtn:hover {
+            background-color: #45a049;
+        }
+
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .task-item:hover {
+            background-color: #f2f2f2;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .task-text {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animated {
+            animation: slideIn 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="todo-container">
+        <div class="todo-header">Todo List</div>
+        <div class="todo-body">
+            <input type="text" id="taskInput" placeholder="Enter a new task">
+            <button id="addTaskBtn" onclick="addTask()">Add Task</button>
+            <ul id="taskList" class="task-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskList = document.getElementById('taskList');
+
+        // Function to add a new task
+        function addTask() {
+            const taskText = taskInput.value.trim();
+
+            if (taskText === '') {
+                alert('Please enter a task.');
+                return;
+            }
+
+            const li = document.createElement('li');
+            li.className = 'task-item animated';
+            li.innerHTML = `
+                <div class="task-text">${taskText}</div>
+                <button class="delete-btn" onclick="removeTask(this.parentNode)">Delete</button>
+            `;
+
+            taskList.appendChild(li);
+
+            // Clear the input field
+            taskInput.value = '';
+
+            // Remove animation class after animation completes
+            li.addEventListener('animationend', function () {
+                li.classList.remove('animated');
+            });
+        }
+
+        // Function to remove a task
+        function removeTask(taskElement) {
+            taskElement.classList.add('animated');
+            taskElement.addEventListener('animationend', function () {
+                taskElement.remove();
+            });
+        }
+    </script>
+
+</body>
+</html>
